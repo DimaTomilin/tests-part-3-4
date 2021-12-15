@@ -16,14 +16,10 @@ beforeEach(async () => {
 
 describe('testing Api requests', () => {
   it('blogs are returned as json', async () => {
-    await api
+    const response = await api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/);
-  });
-
-  it('there are 6 blogs', async () => {
-    const response = await api.get('/api/blogs');
 
     expect(response.body).toHaveLength(blogs.length);
   });
@@ -67,6 +63,26 @@ describe('testing Api requests', () => {
       .send(badBlog)
       .expect(400)
       .expect('Content-Type', /application\/json/);
+  });
+});
+
+describe('testing Api requests with specific id', () => {
+  it('deleting blogs by using endpoint api/blogs/:id', async () => {
+    const response = await api.delete('/api/blogs/5a422a851b54a676234d17f7');
+
+    expect(response.body.id).toBe('5a422a851b54a676234d17f7');
+
+    const response2 = await api.get('/api/blogs');
+
+    expect(response2.body).toHaveLength(blogs.length - 1);
+  });
+
+  it('updating blogs by using endpoint api/blogs/:id', async () => {
+    const response = await api
+      .patch('/api/blogs/5a422a851b54a676234d17f7')
+      .send({ likes: 10 });
+
+    expect(response.body.likes).toBe(10);
   });
 });
 

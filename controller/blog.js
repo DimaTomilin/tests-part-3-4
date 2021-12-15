@@ -12,4 +12,19 @@ const createNewBlog = async (req, res) => {
   res.status(201).send(result);
 };
 
-module.exports = { getAllBlogs, createNewBlog };
+const deleteBlog = async (req, res) => {
+  const id = req.params.id;
+  const blog = await Blog.findOneAndDelete({ id });
+
+  res.send(blog);
+};
+
+const updateBlog = async (req, res) => {
+  const id = req.params.id;
+  const { likes } = req.body;
+  const blog = await Blog.findOneAndUpdate({ id }, { likes }, { new: true });
+
+  res.send(blog);
+};
+
+module.exports = { getAllBlogs, createNewBlog, deleteBlog, updateBlog };

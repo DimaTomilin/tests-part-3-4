@@ -48,3 +48,10 @@ exports.blogs = [
     __v: 0,
   },
 ];
+
+exports.newTestBlog = {
+  title: 'Test',
+  author: 'Test',
+  url: 'Test',
+  likes: 0,
+};

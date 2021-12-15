@@ -3,7 +3,7 @@ const app = require('../index');
 const mongoose = require('mongoose');
 
 const api = supertest(app);
-const { blogs } = require('./BlogData');
+const { blogs, newTestBlog } = require('./BlogData');
 const Blog = require('../models/blog');
 
 beforeEach(async () => {
@@ -34,17 +34,11 @@ describe('testing Api requests', () => {
     expect(response.body[0].id).toBeDefined();
     expect(response.body[3].id).toBeDefined();
   });
-  it('saving new blog', async () => {
-    const newBlog = {
-      title: 'Test',
-      author: 'Test',
-      url: 'Test',
-      likes: 0,
-    };
 
+  it('saving new blog', async () => {
     await api
       .post('/api/blogs')
-      .send(newBlog)
+      .send(newTestBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/);
 
@@ -52,6 +46,18 @@ describe('testing Api requests', () => {
 
     expect(response.body).toHaveLength(blogs.length + 1);
     expect(response.body[blogs.length].title).toBe('Test');
+  });
+
+  it('verify if likes property is missing then it defaults to 0', async () => {
+    await api
+      .post('/api/blogs')
+      .send(newTestBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const response = await api.get('/api/blogs');
+
+    expect(response.body[blogs.length].likes).toBe(0);
   });
 });
 

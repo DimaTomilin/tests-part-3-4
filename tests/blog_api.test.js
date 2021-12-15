@@ -28,11 +28,30 @@ describe('testing Api requests', () => {
     expect(response.body).toHaveLength(blogs.length);
   });
 
-  it('should validate a post has an id', async () => {
+  it('should validate a blog has an id', async () => {
     const response = await api.get('/api/blogs');
-    console.log(response.body);
+
     expect(response.body[0].id).toBeDefined();
     expect(response.body[3].id).toBeDefined();
+  });
+  it('saving new blog', async () => {
+    const newBlog = {
+      title: 'Test',
+      author: 'Test',
+      url: 'Test',
+      likes: 0,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const response = await api.get('/api/blogs');
+
+    expect(response.body).toHaveLength(blogs.length + 1);
+    expect(response.body[blogs.length].title).toBe('Test');
   });
 });
 

@@ -59,6 +59,15 @@ describe('testing Api requests', () => {
 
     expect(response.body[blogs.length].likes).toBe(0);
   });
+
+  it('verify if url or title property is missing then return 400', async () => {
+    const badBlog = { author: 'Test1', likes: 25 };
+    await api
+      .post('/api/blogs')
+      .send(badBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+  });
 });
 
 afterAll(() => {

@@ -14,17 +14,26 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/);
-});
+describe('testing Api requests', () => {
+  it('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+  });
 
-test('there are 6 blogs', async () => {
-  const response = await api.get('/api/blogs');
+  it('there are 6 blogs', async () => {
+    const response = await api.get('/api/blogs');
 
-  expect(response.body).toHaveLength(6);
+    expect(response.body).toHaveLength(blogs.length);
+  });
+
+  it('should validate a post has an id', async () => {
+    const response = await api.get('/api/blogs');
+    console.log(response.body);
+    expect(response.body[0].id).toBeDefined();
+    expect(response.body[3].id).toBeDefined();
+  });
 });
 
 afterAll(() => {

@@ -8,9 +8,11 @@ const {
   updateBlog,
 } = require('../controller/blog');
 
+const { authToken } = require('../utils/middleware');
+
 router.get('/', getAllBlogs);
-router.post('/', createNewBlog);
-router.delete('/:id', deleteBlog);
+router.post('/', authToken, createNewBlog);
+router.delete('/:id', authToken, deleteBlog);
 router.patch('/:id', updateBlog);
 
 module.exports = router;

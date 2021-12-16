@@ -22,6 +22,7 @@ mongoose
   });
 
 const BlogRoute = require('./routers/blogRoute');
+const UserRoute = require('./routers/userRoute');
 const middleware = require('./utils/middleware');
 
 app.use(cors());
@@ -35,6 +36,7 @@ app.use(
 );
 
 app.use('/api/blogs', BlogRoute);
+app.use('/api/users', UserRoute);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

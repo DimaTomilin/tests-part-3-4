@@ -31,12 +31,12 @@ const getAllUsers = async (req, res) => {
 
 const logIn = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.find({ username });
+
+  const user = await User.findOne({ username });
+
   if (user) {
-    const correctPassword = await bcrypt.compare(
-      `${password}`,
-      `${user.password}`
-    );
+    const correctPassword = await bcrypt.compare(password, user.passwordHash);
+
     if (correctPassword) {
       const accessToken = generateAccessToken({
         username,
@@ -53,4 +53,4 @@ const logIn = async (req, res) => {
   } else return res.status(404).send({ error: 'Cannot find user' });
 };
 
-module.exports = { createNewUser, getAllUsers, signIn: logIn };
+module.exports = { createNewUser, getAllUsers, logIn };

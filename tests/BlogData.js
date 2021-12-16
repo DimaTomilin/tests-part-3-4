@@ -55,3 +55,9 @@ exports.newTestBlog = {
   url: 'Test',
   likes: 0,
 };
+
+exports.newUser = {
+  username: 'test1',
+  name: 'test name',
+  password: '123456',
+};

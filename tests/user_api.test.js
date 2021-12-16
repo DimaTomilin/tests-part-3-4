@@ -69,11 +69,9 @@ describe('testing creating user', () => {
         .expect(201)
         .expect('Register Success');
 
-      await api
-        .post('/api/users')
-        .send(newUser)
-        .expect(409)
-        .expect('User already exists');
+      const response = await api.post('/api/users').send(newUser).expect(409);
+
+      expect(response.body.error).toBe('User already exists');
     }, 100000);
   }, 100000);
 });

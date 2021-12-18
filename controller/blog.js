@@ -17,7 +17,6 @@ const createNewBlog = async (req, res) => {
     { $push: { blogs: newBlog._id } }
   );
 
-  console.log('creating blog', newBlog);
   res.status(201).send(newBlog);
 };
 
@@ -25,6 +24,7 @@ const deleteBlog = async (req, res) => {
   const _id = req.params.id;
 
   const blog = await Blog.findOne({ _id });
+
   if (!blog.user) {
     res
       .status(403)

@@ -13,6 +13,6 @@ const { authToken } = require('../utils/middleware');
 router.get('/', getAllBlogs);
 router.post('/', authToken, createNewBlog);
 router.delete('/:id', authToken, deleteBlog);
-router.patch('/:id', updateBlog);
+router.put('/:id', authToken, updateBlog);
 
 module.exports = router;

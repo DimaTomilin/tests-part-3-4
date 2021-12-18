@@ -25,8 +25,13 @@ const deleteBlog = async (req, res) => {
   const _id = req.params.id;
 
   const blog = await Blog.findOne({ _id });
+  if (!blog.user) {
+    res
+      .status(403)
+      .send({ error: 'Unknown creater of Blog you can`t delete it' });
+  }
   if (blog.user.toString() === req.user.id) {
-    await User.deleteOne({ _id });
+    await Blog.findOneAndDelete({ _id });
     res.send(blog);
   } else {
     res
@@ -36,9 +41,9 @@ const deleteBlog = async (req, res) => {
 };
 
 const updateBlog = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params.id;
   const { likes } = req.body;
-  const blog = await Blog.findOneAndUpdate({ id }, { likes }, { new: true });
+  const blog = await Blog.findOneAndUpdate({ _id }, { likes }, { new: true });
 
   res.send(blog);
 };
